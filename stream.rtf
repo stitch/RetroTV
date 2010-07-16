@@ -1,0 +1,137 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf290
+{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\froman\fcharset0 TimesNewRomanPSMT;\f2\fnil\fcharset0 LucidaGrande;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fmodern\fcharset0 Courier;\f5\fnil\fcharset0 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red221\green230\blue238;\red230\green230\blue230;
+\red247\green247\blue247;\red230\green228\blue214;\red64\green116\blue71;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15640\viewh15040\viewkind0
+\deftab720
+\pard\pardeftab720\sa460\ql\qnatural
+
+\f0\b\fs36 \cf0 Mini-SAP-server\
+\pard\pardeftab720\sa160\ql\qnatural
+
+\f1\b0\fs32 \cf0 You can add a channel information service based on the SAP/SDP standard to the VideoLAN solution. The mini-SAP-server sends announces about the multicast programs on the network in IPv4 or IPv6, and VLCs receive these annouces and automatically add the programs announced to their playlist.\
+The mini-SAP-server works under Linux and Mac OS X.\
+\
+\
+Type inhoud:\
+- Youtube / Leuke filmpjes. Ong 3 min per stuk\
+- leaders en bumpers, reclaim intro. par seconded per stuk\
+- main content: shows van 20 tot 45 tot 1.30 uur.\
+- reclame, stukjes van ongeveer 30 seconde per stuk.\
+- annonce lijsten, met de programmering van die dag (main content)\
+\
+typen slots: het 1 uur slot voor shows van 31 tot 56 minuten\
+.00:00 Begin Show\
+.45:00 bumper (begin 1 minuut blok)\
+.45:10 announce\
+.45:50 bumper (eind 1 minuut blok)\
+.46:00 reclame (flexibel, minimaal 2 minuten, max 5)\
+.48:00 bumper, mogelijk annonce filling om tijd vol te maken naar volgende 10 min blok\
+.48:10 leuke filmpjes (flexibel, minimaal 6 minuten)\
+.FILL bumper, anounce\
+.56:00 reclame (3 minuten), tot max 59:00\
+.59:00 1 minuut annonce blok\
+\
+\
+\
+http://wiki.videolan.org/How_to_add_logo\
+http://forum.videolan.org/viewtopic.php?f=11&t=41792\
+http://wiki.videolan.org/How_to_create_thumbnails\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 \
+\pard\pardeftab720\sl360\ql\qnatural
+
+\f2\fs26 \cf2 \cb3 http://forum.videolan.org/viewtopic.php?f=4&t=54002 new format \
+sout-keep. XSPF\
+\
+\
+1: transcoded naar dezelfde formaten? Nee\
+2: multicast streaming\'85\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f3\b\fs20 \cf0 \cb4 vlc input_stream --sout-keep\
+"#module1\{option1=parameter1\{parameter-option1\},option2=parameter2\}:\
+  module2\{option1=...,option2=...\}:\
+  module3\{option1=...,option2=...\}"\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f4\b0 \cf0 % 
+\f3\b vlc /Users/stitch/Documents/tv/playlist.xspf --sout-module1-option1=... --sout-module1-option2=... --sout-module2-option1=... --sout-module2-option2=... ...\
+\
+\
+./vlc /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout-keep "#standard\{access=http,mux=ts,dst=,slp,name=stitch\}"\
+\
+\
+\pard\pardeftab720\sl220\ql\qnatural
+
+\f4\b0 \cf0 \cb5 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout-keep\cb5  '#duplicate\{dst=rtp\{mux=ts,dst=239.255.12.42,sdp=sap,name="TestStream"\},dst=rtp\{mux=ts,dst=127.0.0.1:9900\}\}' \
+\
+\pard\pardeftab720\sl360\ql\qnatural
+
+\f2\b0\fs24 \cf2 \cb6 0.0.0.0 means "listen on all IP addresses".\
+
+\f3\b\fs20 \cf0 \cb5 \
+\pard\pardeftab720\sl220\ql\qnatural
+
+\f4\b0 \cf0 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout-keep\cb5  '#duplicate\{dst=rtp\{mux=ts,dst=239.255.12.42,sdp=sap,name="TestStream"\},dst=rtp\{mux=ts,dst=0.0.0.0:8080\}\}' \
+\
+\
+
+\f4\b0 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout-keep\cb5  '#standard\{dst=rtp\{mux=ts,dst=0.0.0.0:8080\}\}' \
+\
+
+\f4\b0 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout=\cb5 "#standard\{mux=ts,dst=192.168.1.110:8080\}"\
+\
+ --sout="#rtp\{mux=ts,dst=multicast:8080\}"\
+\
+\
+
+\f4\b0 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf \cb5 --sout='#http\{dst=:8080/mystream.ts\}'\
+\
+\
+Werkt: geen video op PC, misschien omdat de PC niet de juiste decoders heeft\'85 \
+Ook crash ie nog op de server als ik iets doe op de cli\'ebnt.\
+
+\f4\b0 ./
+\f3\b vlc -vvv \cb4 /Users/stitch/Documents/tv/playlist/20100521_1300_The\\ A\\ Team.xspf --sout-keep \cb5 --sout="#std\{access=http,mux=ts,dst=:8080/mystream.ts\}"\
+\
+\
+\
+The DESTINATION is your own machine (what a stupid name) \
+the INput Stream is another stupid name for a playlist or movie file you want to send.\
+\
+\
+\
+Voor scheduling moet je VLM gebruiken. Dit zit op een telnetinterface. Je start VLC met\
+\pard\pardeftab720\sl300\ql\qnatural
+
+\f5\b0\fs24 \cf7 \cb1 vlc -I telnet \
+\
+Daarna ga je via een andere shell daar naar toe:\
+telnet localost 4212
+\f3\b\fs20 \cf0 \cb5 \
+\pard\pardeftab720\sl220\ql\qnatural
+\cf0 \
+En zet je de playlists in goede volgorde neer\'85\
+\
+dan doe je:\
+new blaatnaam schedule \
+setup blaatnaam (properties)\
+save -> saved een config file\
+load -> load voorgemaakte config files, die ga ik dus schrijven.\
+http://www.videolan.org/doc/streaming-howto/en/ch05.html#vlmconf\
+\
+meer over VLM:  (het lijkt er overigens op dat XSPF en vlM nog niet samenwerken...\
+http://www.videolan.org/doc/streaming-howto/en/ch05.html\
+\
+\
+}
